@@ -1,8 +1,20 @@
 package http
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func SetupRoutes(router *gin.Engine, handler *Handler) {
+	router.SetTrustedProxies(nil)
+
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "hi :)",
+		})
+	})
+
 	api := router.Group("api")
 	{
 		api.POST("/archive/information", handler.AnalyzeArchive)
